@@ -24,10 +24,10 @@ public class ClienteResponseDTO extends RepresentationModel<ClienteResponseDTO> 
 	private String apellido;
 	private String nombre;
 	private String domicilio;
-	//private String email;
-	//private Date fechaNacimiento;
-	//private Long nuneroPasaporte;
-	//private Date fechaVencientoPasaporte;
+	private String email;
+	private Date fechaNacimiento;
+	private Long nuneroPasaporte;
+	private Date fechaVencientoPasaporte;
 	
 	public ClienteResponseDTO(Cliente pojo) {
 		super();
@@ -35,10 +35,10 @@ public class ClienteResponseDTO extends RepresentationModel<ClienteResponseDTO> 
 		this.nombre=pojo.getNombre();
 		this.dni=pojo.getDni();
 		this.domicilio=pojo.getDomicilio();
-		//this.email=pojo.getEmail();
-		//this.fechaNacimiento=pojo.getFechaNacimiento();
-		//this.nuneroPasaporte=pojo.getNuneroPasaportei();
-		//this.fechaVencientoPasaporte=pojo.getFechaVencientoPasaporte();
+		this.email=pojo.getEmail();
+		this.fechaNacimiento=pojo.getFechaNacimiento();
+		this.nuneroPasaporte=pojo.getNuneroPasaportei();
+		this.fechaVencientoPasaporte=pojo.getFechaVencientoPasaporte();
 		
 	}
 	public Long getDni() {
@@ -65,7 +65,7 @@ public class ClienteResponseDTO extends RepresentationModel<ClienteResponseDTO> 
 	public void setDomicilio(String domicilio) {
 		this.domicilio = domicilio;
 	}
-	/*
+	
 	public String getEmail() {
 		return email;
 	}
@@ -93,7 +93,7 @@ public class ClienteResponseDTO extends RepresentationModel<ClienteResponseDTO> 
 	public void setFechaVencientoPasaporte(Date fechaVencientoPasaporte) {
 		this.fechaVencientoPasaporte = fechaVencientoPasaporte;
 	}
-	*/
+	
 	
 	@Override
 	public String toString() {
