@@ -19,7 +19,7 @@ public class ClienteForm {
 
 
 	@NotNull(message = "el dni no puede ser nulo")
-	@Min(7000000)
+	@Min(1)
 	private Long dni;
 	@NotNull
 	@Size(min=2, max=30, message = "apellido demasiado largo")
@@ -30,6 +30,7 @@ public class ClienteForm {
 	@NotNull
 	@Size(min = 1,max = 100, message = "Debe completar el domicilio")
 	private String domicilio;
+	
 	@Email(message = "El e-mail ingresado no es valido")
 	private String email;
 	@DateTimeFormat(pattern = "dd/MM/yyyy")
@@ -78,7 +79,7 @@ public class ClienteForm {
 		this.fechaNacimiento = fechaNacimiento;
 	}
 	
-	public Long getNuneroPasaportei() {
+	public Long getNuneroPasaporte() {
 		return nuneroPasaporte;
 	}
 	public void setNuneroPasaporte(Long nuneroPasaporte) {
@@ -100,10 +101,12 @@ public class ClienteForm {
 		c.setNombre(this.getNombre());
 		c.setDni(this.getDni());
 		c.setDomicilio(this.getDomicilio());
+		
 		c.setEmail(this.getEmail());
 		c.setFechaNacimiento(this.getFechaNacimiento());
-		c.setNuneroPasaporte(this.getNuneroPasaportei());
+		c.setNuneroPasaporte(this.getNuneroPasaporte());
 		c.setFechaVencientoPasaporte(this.getFechaVencientoPasaporte());
+		
 		return c;
 	}
 	
