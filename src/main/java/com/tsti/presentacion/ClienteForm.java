@@ -22,19 +22,20 @@ public class ClienteForm {
 	@Min(1)
 	private Long dni;
 	@NotNull
-	@Size(min=2, max=30, message = "apellido demasiado largo")
+	@Size(min=2, max=30, message = "apellido: bebe tener 2-30 letras")
 	private String apellido;
 	@NotNull
-	@Size(min=2, max=30, message = "nombre demasiado largo")
+	@Size(min=2, max=30, message = "nombre: bebe tener 2-30 letras")
 	private String nombre;
 	@NotNull
-	@Size(min = 1,max = 100, message = "Debe completar el domicilio")
+	@Size(min = 1,max = 50, message = "domicilio: bebe tener 2-50 letras")
 	private String domicilio;
 	
 	@Email(message = "El e-mail ingresado no es valido")
 	private String email;
-	@DateTimeFormat(pattern = "dd/MM/yyyy")
+	@DateTimeFormat(pattern = "yyyy/MM/dd")
 	private Date fechaNacimiento;
+	@NotNull(message = "el nuneroPasaporte no puede ser nulo")
 	private Long nuneroPasaporte;
 	@DateTimeFormat(pattern = "dd/MM/yyyy")
 	private Date fechaVencientoPasaporte;
