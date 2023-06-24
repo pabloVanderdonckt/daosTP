@@ -30,6 +30,8 @@ public class ClienteForm {
 	@NotNull
 	@Size(min = 1,max = 50, message = "domicilio: bebe tener 2-50 letras")
 	private String domicilio;
+	@NotNull(message = "el idCiudad no puede ser nulo")
+	private Long idCiudad;
 	
 	@Email(message = "El e-mail ingresado no es valido")
 	private String email;
@@ -64,6 +66,12 @@ public class ClienteForm {
 	}
 	public void setDomicilio(String domicilio) {
 		this.domicilio = domicilio;
+	}
+	public Long getIdCiudad() {
+		return idCiudad;
+	}
+	public void setIdCiudad(Long idCiudad) {
+		this.idCiudad = idCiudad;
 	}
 	
 	public String getEmail() {
@@ -100,8 +108,8 @@ public class ClienteForm {
 		c.setDni(this.getDni());
 		c.setApellido(this.getApellido());
 		c.setNombre(this.getNombre());
-		c.setDni(this.getDni());
 		c.setDomicilio(this.getDomicilio());
+		
 		
 		c.setEmail(this.getEmail());
 		c.setFechaNacimiento(this.getFechaNacimiento());

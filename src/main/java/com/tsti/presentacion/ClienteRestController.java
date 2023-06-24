@@ -30,9 +30,12 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tsti.dto.ClienteResponseDTO;
+import com.tsti.entidades.Ciudad;
 import com.tsti.entidades.Cliente;
+
 import com.tsti.exception.Excepcion;
 import com.tsti.presentacion.error.MensajeError;
+import com.tsti.servicios.CiudadService;
 import com.tsti.servicios.ClienteService;
 
 import jakarta.validation.Valid;
@@ -47,7 +50,9 @@ public class ClienteRestController {
 	
 	@Autowired
 	private ClienteService service; 
-		
+	
+	@Autowired
+	private CiudadService ciudadService;
 	
 	/**
 	 * Permite filtrar clientes.
@@ -70,6 +75,7 @@ public class ClienteRestController {
 
 	}
 	
+	
 
 	/**
 	 * @param id DNI del cliente buscada
@@ -91,6 +97,7 @@ public class ClienteRestController {
 	}
 	
 	
+	
 	//Ver
 	/**
 	 * Crea un cliente con el dni indicado y los parametros pasados
@@ -108,6 +115,13 @@ public class ClienteRestController {
 		}
 		
 		Cliente c = form.toPojo();
+		Optional<Ciudad> ci = ciudadService.getById(form.getIdCiudad());
+		if(ci.isPresent())
+			c.setCiudad(ci.get());
+		else
+		{
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(getError("02", "Ciudad Requerida", "La ciudad indicada no se encuentra en la base de datos."));
+		}
 		
 		//ahora inserto el cliente
 		service.insert(c);
@@ -119,6 +133,7 @@ public class ClienteRestController {
 		
 
 	}
+	
 	
 	
 	/**
@@ -137,7 +152,11 @@ public class ClienteRestController {
 		else
 		{
 			Cliente c = form.toPojo();
-			
+			Optional<Ciudad> ci = ciudadService.getById(form.getIdCiudad());
+			if(ci.isPresent())
+				c.setCiudad(ci.get());
+			else
+				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(getError("02", "Ciudad Requerida", "La ciudad indicada no se encuentra en la base de datos."));
 			if(!c.getDni().equals(dni))//El dni es el identificador, con lo cual es el único dato que no permito modificar
 				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(getError("03", "Dato no editable", "Noi puede modificar el dni."));
 			service.update(c);
@@ -145,6 +164,9 @@ public class ClienteRestController {
 		}
 		
 	}
+	
+
+	
 	
 	//Funciona
 	/**
@@ -173,7 +195,12 @@ public class ClienteRestController {
 			Link selfLink = WebMvcLinkBuilder.linkTo(ClienteRestController.class)
 										.slash(pojo.getDni())                
 										.withSelfRel();
+			//Method link: Link al servicio que permitirá navegar hacia la ciudad relacionada a la persona
+			Link ciudadLink = WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(CiudadRestController.class)
+			       													.getById(pojo.getCiudad().getId()))
+			       													.withRel("ciudad");
 			dto.add(selfLink);
+			dto.add(ciudadLink);
 			return dto;
 		} catch (Exception e) {
 			throw new Excepcion(e.getMessage(), 500);

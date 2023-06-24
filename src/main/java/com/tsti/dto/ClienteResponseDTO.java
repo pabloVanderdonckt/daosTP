@@ -24,6 +24,7 @@ public class ClienteResponseDTO extends RepresentationModel<ClienteResponseDTO> 
 	private String apellido;
 	private String nombre;
 	private String domicilio;
+	private String ciudad;
 	private String email;
 	private Date fechaNacimiento;
 	private Long nuneroPasaporte;
@@ -35,6 +36,7 @@ public class ClienteResponseDTO extends RepresentationModel<ClienteResponseDTO> 
 		this.nombre=pojo.getNombre();
 		this.dni=pojo.getDni();
 		this.domicilio=pojo.getDomicilio();
+		this.ciudad=pojo.getCiudad().getNombre();
 		this.email=pojo.getEmail();
 		this.fechaNacimiento=pojo.getFechaNacimiento();
 		this.nuneroPasaporte=pojo.getNuneroPasaportei();
@@ -66,6 +68,12 @@ public class ClienteResponseDTO extends RepresentationModel<ClienteResponseDTO> 
 		this.domicilio = domicilio;
 	}
 	
+	public String getCiudad() {
+		return ciudad;
+	}
+	public void setCiudad(String ciudad) {
+		this.ciudad = ciudad;
+	}
 	public String getEmail() {
 		return email;
 	}

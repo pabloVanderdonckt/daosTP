@@ -8,6 +8,8 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
+
 import java.util.Date;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
@@ -30,6 +32,9 @@ public class Cliente {
 	@NotNull
 	@Size(min = 1,max = 100, message = "Debe completar el domicilio")
 	private String domicilio;
+	
+	@ManyToOne
+	private Ciudad ciudad;
 	
 	@Email(message = "El e-mail ingresado no es valido")
 	private String email;
@@ -74,6 +79,13 @@ public class Cliente {
 	}
 	public void setDomicilio(String domicilio) {
 		this.domicilio = domicilio;
+	}
+	
+	public Ciudad getCiudad() {
+		return ciudad;
+	}
+	public void setCiudad(Ciudad ciudad) {
+		this.ciudad = ciudad;
 	}
 	
 	public String getEmail() {
