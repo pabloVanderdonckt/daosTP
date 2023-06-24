@@ -8,7 +8,7 @@ import jakarta.persistence.Id;
 
 
 @Entity
-public class Ciudad {
+public class Estado {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -16,20 +16,16 @@ public class Ciudad {
 	
 	@Column(length = 500)
 	private String nombre;
-	private String cp;
 	
-	
-	
-	public Ciudad()
+	public Estado()
 	{
 		super();
 	}
 
-	public Ciudad(Long id, String nombre, String cp) {
+	public Estado(Long id, String nombre, String cp) {
 		super();
 		this.id = id;
 		this.nombre = nombre;
-		this.cp=cp;
 	}
 	
 	public Long getId() {
@@ -49,14 +45,6 @@ public class Ciudad {
 	@Override
 	public String toString() {
 		return id+" - "+ nombre;
-	}
-
-	public String getCp() {
-		return cp;
-	}
-
-	public void setCp(String cp) {
-		this.cp = cp;
 	}
 
 
