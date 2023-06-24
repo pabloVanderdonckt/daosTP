@@ -99,9 +99,9 @@ public class VueloRestController {
 	
 	//Ver
 	/**
-	 * Crea un cliente con el dni indicado y los parametros pasados
-	 * @param c Clientes  a insertar
-	 * @return Cliente insertado o error en otro caso
+	 * Crea un Vuelo con el id indicado y los parametros pasados
+	 * @param v Vuelo  a insertar
+	 * @return Vuelo insertado o error en otro caso
 	 * @throws Exception 
 	 */
 	@PostMapping
@@ -112,9 +112,14 @@ public class VueloRestController {
 		{
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body( this.formatearError(result));
 		}
-		
 		Vuelo v = form.toPojo();
+		form.setIdEstado(1);
+		Optional<Estado> e = EstadoService.getById(form.getIdEstado());
+		v.setEstado(e.get());
+		
 		v.setOrigen("Origen");
+		
+		
 		
 		//ahora inserto el cliente
 		service.insert(v);
@@ -130,28 +135,36 @@ public class VueloRestController {
 	
 	
 	/**
-	 * Actualiza el cliente con el dni indicado y los parametros pasados
-	 * @param c Cliente a modificar
-	 * @return Client6e Editado o error en otro caso
+	 * Actualiza el Vuelo con el dni indicado y los parametros pasados
+	 * @param v Vuelo a modificar
+	 * @return Vuelo Editado o error en otro caso
 	 * @throws Excepcion 
 	 */
-	@PutMapping("/{dni}")
+	@PutMapping("/{id}")
 	public ResponseEntity<Object>  actualizar(@RequestBody VueloForm form, @PathVariable long id) throws Exception
 	{
 		Optional<Vuelo> rta = service.getById(id);
 		if(!rta.isPresent())
-			return  ResponseEntity.status(HttpStatus.NOT_FOUND).body("No se encuentra el cliente que desea modificar.");
+			return  ResponseEntity.status(HttpStatus.NOT_FOUND).body("No se encuentra el Vuelo que desea modificar.");
 			
 		else
 		{
 			Vuelo v = form.toPojo();
+			form.setIdEstado(2);
 			Optional<Estado> e = EstadoService.getById(form.getIdEstado());
-			if(e.isPresent())
-				v.setEstado(e.get());
-			else
-				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(getError("02", "Ciudad Requerida", "La ciudad indicada no se encuentra en la base de datos."));
-			if(!v.getId().equals(id))//El dni es el identificador, con lo cual es el único dato que no permito modificar
-				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(getError("03", "Dato no editable", "Noi puede modificar el dni."));
+			v.setEstado(e.get());
+			
+			if(!v.getId().equals(id))//El id es el identificador, dato que no permito modificar
+				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(getError("03", "Dato no editable", "No se puede modificar el id."));
+			if(!v.getDestino().equals(rta.get().getDestino())) //, dato que no permito modificar
+				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(getError("03", "Dato no editable", "No puede modificar el destino."));
+			if(!(v.getNuneroFilas()==(rta.get().getNuneroFilas())))//El id es el identificador, dato que no permito modificar
+				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(getError("03", "Dato no editable", "No se puede modificar el numero de filas."));
+			if(!(v.getNuneroAsientos()==(rta.get().getNuneroAsientos())))//El id es el identificador, dato que no permito modificar
+				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(getError("03", "Dato no editable", "No se puede modificar el numero de asientos."));		
+			if(!v.getTipoVuelo().equals(rta.get().getTipoVuelo())) //, dato que no permito modificar
+				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(getError("03", "Dato no editable", "No puede modificar el tipo de vuelo"));
+			
 			service.update(v);
 			return ResponseEntity.ok(buildResponse(v));
 		}
@@ -161,21 +174,30 @@ public class VueloRestController {
 
 	
 	
+	
 	//Funciona
 	/**
 	 * Borra el cliente con el dni indicado
 	 * @param dni Dni de la cliente a borrar
 	 * @return ok en caso de borrar exitosamente al cliente, error en otro caso
 	 */
-	@DeleteMapping("/{dni}")
-	public ResponseEntity<String> eliminar(@PathVariable Long id)
+	@DeleteMapping("/{id}")
+	public ResponseEntity<Object> eliminar(@PathVariable Long id)
 	{
-		if(!service.getById(id).isPresent())
-			return  ResponseEntity.status(HttpStatus.NOT_FOUND).body("No existe un cliente con ese dni");
-		service.delete(id);
-		
-		return ResponseEntity.ok().build();
-		
+		Optional<Vuelo> rta = service.getById(id);
+		if(!rta.isPresent())
+			return  ResponseEntity.status(HttpStatus.NOT_FOUND).body("No existe un Vuelo con ese ID");
+			
+		else
+		{
+			Vuelo v = new Vuelo();
+			v=rta.get();
+			long est=3;
+			Optional<Estado> e = EstadoService.getById(est);
+			v.setEstado(e.get());
+			service.update(v);
+			return ResponseEntity.ok().build();
+		}
 		
 	}
 	

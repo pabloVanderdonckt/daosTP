@@ -15,7 +15,7 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 /**
- * Objeto necesario para insertar o eliminar un cliente. 
+ * Objeto necesario para insertar o eliminar un vuelo. 
  *
  */
 public class VueloForm {
@@ -38,7 +38,7 @@ public class VueloForm {
 	private String destino;
 	@NotNull
 	private String origen;
-	@NotNull(message = "el idEstado no puede ser nulo")
+	//@NotNull(message = "el idEstado no puede ser nulo")
 	private long idEstado;
 		
 	public Long getId() {
